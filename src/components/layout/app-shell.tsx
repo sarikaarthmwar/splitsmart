@@ -1,7 +1,9 @@
 import { Menu, Plus, ReceiptText } from 'lucide-react'
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
+import { useAuth } from '@/features/auth/auth-context'
+import { signOut } from '@/lib/auth'
 import { cn } from '@/lib/utils'
 
 const navigation = [
@@ -11,6 +13,14 @@ const navigation = [
 ]
 
 export function AppShell() {
+  const { user } = useAuth()
+  const navigate = useNavigate()
+
+  async function handleSignOut() {
+    const { error } = await signOut()
+    if (!error) navigate('/login')
+  }
+
   return (
     <div className="min-h-screen bg-muted/40">
       <header className="sticky top-0 z-10 border-b bg-background/95 backdrop-blur">
@@ -22,6 +32,8 @@ export function AppShell() {
             SplitSmart
           </NavLink>
           <div className="flex items-center gap-2">
+            <span className="hidden max-w-48 truncate text-sm text-muted-foreground sm:inline">{user?.email}</span>
+            <Button asChild size="sm" variant="ghost"><NavLink to="/profile">Profile</NavLink></Button>
             <Button className="hidden sm:inline-flex" size="sm">
               <Plus className="size-4" aria-hidden="true" />
               Add expense
@@ -29,6 +41,7 @@ export function AppShell() {
             <Button aria-label="Open navigation" size="icon" variant="ghost">
               <Menu className="size-5" aria-hidden="true" />
             </Button>
+            <Button onClick={() => void handleSignOut()} size="sm" variant="outline">Sign out</Button>
           </div>
         </div>
       </header>
