@@ -7,23 +7,15 @@ import { Button } from '@/components/ui/button'
 import {
   forgotPasswordSchema,
   loginSchema,
-  profileSchema,
   resetPasswordSchema,
   signupSchema,
   type ForgotPasswordValues,
   type LoginValues,
-  type ProfileValues,
   type ResetPasswordValues,
   type SignupValues,
 } from '@/features/auth/auth-schema'
 import { useAuth } from '@/features/auth/auth-context'
-import {
-  requestPasswordReset,
-  signInWithEmail,
-  signInWithGoogle,
-  signUpWithEmail,
-  updatePassword,
-} from '@/lib/auth'
+import { requestPasswordReset, signInWithEmail, signInWithGoogle, signUpWithEmail, updatePassword } from '@/lib/auth'
 import { supabase } from '@/lib/supabase'
 
 function AuthLayout({ children, title, description }: { children: React.ReactNode; title: string; description: string }) {
@@ -31,9 +23,7 @@ function AuthLayout({ children, title, description }: { children: React.ReactNod
     <div className="min-h-screen bg-muted/40 px-4 py-12">
       <div className="mx-auto w-full max-w-md rounded-2xl border bg-background p-6 shadow-sm sm:p-8">
         <div className="mb-8 text-center">
-          <Link className="text-lg font-semibold tracking-tight" to="/">
-            SplitSmart
-          </Link>
+          <Link className="text-lg font-semibold tracking-tight" to="/">SplitSmart</Link>
           <h1 className="mt-6 text-2xl font-semibold tracking-tight">{title}</h1>
           <p className="mt-2 text-sm text-muted-foreground">{description}</p>
         </div>
@@ -74,9 +64,7 @@ function GoogleButton() {
 function AuthDivider() {
   return (
     <div className="my-5 flex items-center gap-3 text-xs text-muted-foreground">
-      <div className="h-px flex-1 bg-border" />
-      OR
-      <div className="h-px flex-1 bg-border" />
+      <div className="h-px flex-1 bg-border" />OR<div className="h-px flex-1 bg-border" />
     </div>
   )
 }
@@ -117,9 +105,7 @@ export function LoginPage() {
         {error ? <p className="text-sm text-destructive">{error}</p> : null}
         <Button className="w-full" disabled={loading} type="submit">{loading ? 'Signing in…' : 'Sign in'}</Button>
       </form>
-      <p className="mt-6 text-center text-sm text-muted-foreground">
-        New to SplitSmart? <Link className="text-primary hover:underline" to="/signup">Create an account</Link>
-      </p>
+      <p className="mt-6 text-center text-sm text-muted-foreground">New to SplitSmart? <Link className="text-primary hover:underline" to="/signup">Create an account</Link></p>
     </AuthLayout>
   )
 }
@@ -129,19 +115,15 @@ export function SignupPage() {
   const [error, setError] = useState<string | null>(null)
   const [message, setMessage] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
-  const form = useForm<SignupValues>({
-    resolver: zodResolver(signupSchema),
-    defaultValues: { displayName: '', email: '', password: '', confirmPassword: '' },
-  })
+  const form = useForm<SignupValues>({ resolver: zodResolver(signupSchema), defaultValues: { displayName: '', email: '', password: '', confirmPassword: '' } })
 
   async function onSubmit(values: SignupValues) {
     setLoading(true)
     setError(null)
     setMessage(null)
     const { error: authError } = await signUpWithEmail(values.email, values.password, values.displayName)
-    if (authError) {
-      setError(authError.message)
-    } else {
+    if (authError) setError(authError.message)
+    else {
       setMessage('Account created. Check your email if confirmation is required, then sign in.')
       navigate('/login')
     }
@@ -153,33 +135,15 @@ export function SignupPage() {
       <GoogleButton />
       <AuthDivider />
       <form className="space-y-4" onSubmit={(event) => void form.handleSubmit(onSubmit)(event)}>
-        <div>
-          <label className="text-sm font-medium" htmlFor="signup-name">Name</label>
-          <input className="mt-1 w-full rounded-md border bg-background px-3 py-2 text-sm" id="signup-name" {...form.register('displayName')} />
-          <FieldError message={form.formState.errors.displayName?.message} />
-        </div>
-        <div>
-          <label className="text-sm font-medium" htmlFor="signup-email">Email</label>
-          <input className="mt-1 w-full rounded-md border bg-background px-3 py-2 text-sm" id="signup-email" type="email" {...form.register('email')} />
-          <FieldError message={form.formState.errors.email?.message} />
-        </div>
-        <div>
-          <label className="text-sm font-medium" htmlFor="signup-password">Password</label>
-          <input className="mt-1 w-full rounded-md border bg-background px-3 py-2 text-sm" id="signup-password" type="password" {...form.register('password')} />
-          <FieldError message={form.formState.errors.password?.message} />
-        </div>
-        <div>
-          <label className="text-sm font-medium" htmlFor="signup-confirm">Confirm password</label>
-          <input className="mt-1 w-full rounded-md border bg-background px-3 py-2 text-sm" id="signup-confirm" type="password" {...form.register('confirmPassword')} />
-          <FieldError message={form.formState.errors.confirmPassword?.message} />
-        </div>
+        <div><label className="text-sm font-medium" htmlFor="signup-name">Name</label><input className="mt-1 w-full rounded-md border bg-background px-3 py-2 text-sm" id="signup-name" {...form.register('displayName')} /><FieldError message={form.formState.errors.displayName?.message} /></div>
+        <div><label className="text-sm font-medium" htmlFor="signup-email">Email</label><input className="mt-1 w-full rounded-md border bg-background px-3 py-2 text-sm" id="signup-email" type="email" {...form.register('email')} /><FieldError message={form.formState.errors.email?.message} /></div>
+        <div><label className="text-sm font-medium" htmlFor="signup-password">Password</label><input className="mt-1 w-full rounded-md border bg-background px-3 py-2 text-sm" id="signup-password" type="password" {...form.register('password')} /><FieldError message={form.formState.errors.password?.message} /></div>
+        <div><label className="text-sm font-medium" htmlFor="signup-confirm">Confirm password</label><input className="mt-1 w-full rounded-md border bg-background px-3 py-2 text-sm" id="signup-confirm" type="password" {...form.register('confirmPassword')} /><FieldError message={form.formState.errors.confirmPassword?.message} /></div>
         {error ? <p className="text-sm text-destructive">{error}</p> : null}
         {message ? <p className="text-sm text-emerald-600">{message}</p> : null}
         <Button className="w-full" disabled={loading} type="submit">{loading ? 'Creating account…' : 'Create account'}</Button>
       </form>
-      <p className="mt-6 text-center text-sm text-muted-foreground">
-        Already have an account? <Link className="text-primary hover:underline" to="/login">Sign in</Link>
-      </p>
+      <p className="mt-6 text-center text-sm text-muted-foreground">Already have an account? <Link className="text-primary hover:underline" to="/login">Sign in</Link></p>
     </AuthLayout>
   )
 }
@@ -203,11 +167,7 @@ export function ForgotPasswordPage() {
   return (
     <AuthLayout title="Reset your password" description="We will send you a secure password reset link.">
       <form className="space-y-4" onSubmit={(event) => void form.handleSubmit(onSubmit)(event)}>
-        <div>
-          <label className="text-sm font-medium" htmlFor="forgot-email">Email</label>
-          <input className="mt-1 w-full rounded-md border bg-background px-3 py-2 text-sm" id="forgot-email" type="email" {...form.register('email')} />
-          <FieldError message={form.formState.errors.email?.message} />
-        </div>
+        <div><label className="text-sm font-medium" htmlFor="forgot-email">Email</label><input className="mt-1 w-full rounded-md border bg-background px-3 py-2 text-sm" id="forgot-email" type="email" {...form.register('email')} /><FieldError message={form.formState.errors.email?.message} /></div>
         {error ? <p className="text-sm text-destructive">{error}</p> : null}
         {message ? <p className="text-sm text-emerald-600">{message}</p> : null}
         <Button className="w-full" disabled={loading} type="submit">{loading ? 'Sending…' : 'Send reset link'}</Button>
@@ -226,11 +186,7 @@ export function ResetPasswordPage() {
   const form = useForm<ResetPasswordValues>({ resolver: zodResolver(resetPasswordSchema), defaultValues: { password: '', confirmPassword: '' } })
 
   if (!authLoading && !user) {
-    return (
-      <AuthLayout title="Reset link required" description="Open the password reset link from your email to continue.">
-        <Button asChild className="w-full"><Link to="/forgot-password">Request a new link</Link></Button>
-      </AuthLayout>
-    )
+    return <AuthLayout title="Reset link required" description="Open the password reset link from your email to continue."><Button asChild className="w-full"><Link to="/forgot-password">Request a new link</Link></Button></AuthLayout>
   }
 
   async function onSubmit(values: ResetPasswordValues) {
@@ -250,89 +206,12 @@ export function ResetPasswordPage() {
   return (
     <AuthLayout title="Choose a new password" description="Use a strong password you do not reuse elsewhere.">
       <form className="space-y-4" onSubmit={(event) => void form.handleSubmit(onSubmit)(event)}>
-        <div>
-          <label className="text-sm font-medium" htmlFor="reset-password">New password</label>
-          <input className="mt-1 w-full rounded-md border bg-background px-3 py-2 text-sm" id="reset-password" type="password" {...form.register('password')} />
-          <FieldError message={form.formState.errors.password?.message} />
-        </div>
-        <div>
-          <label className="text-sm font-medium" htmlFor="reset-confirm">Confirm password</label>
-          <input className="mt-1 w-full rounded-md border bg-background px-3 py-2 text-sm" id="reset-confirm" type="password" {...form.register('confirmPassword')} />
-          <FieldError message={form.formState.errors.confirmPassword?.message} />
-        </div>
+        <div><label className="text-sm font-medium" htmlFor="reset-password">New password</label><input className="mt-1 w-full rounded-md border bg-background px-3 py-2 text-sm" id="reset-password" type="password" {...form.register('password')} /><FieldError message={form.formState.errors.password?.message} /></div>
+        <div><label className="text-sm font-medium" htmlFor="reset-confirm">Confirm password</label><input className="mt-1 w-full rounded-md border bg-background px-3 py-2 text-sm" id="reset-confirm" type="password" {...form.register('confirmPassword')} /><FieldError message={form.formState.errors.confirmPassword?.message} /></div>
         {error ? <p className="text-sm text-destructive">{error}</p> : null}
         {message ? <p className="text-sm text-emerald-600">{message}</p> : null}
         <Button className="w-full" disabled={loading} type="submit">{loading ? 'Updating…' : 'Update password'}</Button>
       </form>
     </AuthLayout>
-  )
-}
-
-export function ProfilePage() {
-  const { user } = useAuth()
-  const [loading, setLoading] = useState(true)
-  const [saving, setSaving] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [message, setMessage] = useState<string | null>(null)
-  const [initial, setInitial] = useState<ProfileValues>({ displayName: '', defaultCurrency: 'INR', timezone: 'Asia/Kolkata' })
-  const form = useForm<ProfileValues>({ resolver: zodResolver(profileSchema), defaultValues: initial })
-
-  useState(() => {
-    if (!user) return
-    void supabase
-      .from('profiles')
-      .select('display_name, default_currency, timezone')
-      .eq('id', user.id)
-      .single()
-      .then(({ data, error: profileError }) => {
-        if (profileError) setError(profileError.message)
-        if (data) {
-          const next = {
-            displayName: data.display_name ?? user.user_metadata?.name ?? user.user_metadata?.full_name ?? '',
-            defaultCurrency: data.default_currency,
-            timezone: data.timezone,
-          }
-          setInitial(next)
-          form.reset(next)
-        }
-        setLoading(false)
-      })
-  })
-
-  async function onSubmit(values: ProfileValues) {
-    if (!user) return
-    setSaving(true)
-    setError(null)
-    setMessage(null)
-    const { error: profileError } = await supabase.from('profiles').update({
-      display_name: values.displayName,
-      default_currency: values.defaultCurrency,
-      timezone: values.timezone,
-      updated_at: new Date().toISOString(),
-    }).eq('id', user.id)
-    if (profileError) setError(profileError.message)
-    else setMessage('Profile updated.')
-    setSaving(false)
-  }
-
-  if (loading) {
-    return <section className="mx-auto max-w-2xl"><p className="text-sm text-muted-foreground">Loading profile…</p></section>
-  }
-
-  return (
-    <section className="mx-auto max-w-2xl space-y-6">
-      <div><p className="text-sm font-medium text-primary">Profile</p><h1 className="mt-1 text-3xl font-semibold tracking-tight">Your account</h1><p className="mt-2 text-muted-foreground">These settings personalize SplitSmart. Your login email stays managed by authentication.</p></div>
-      <div className="rounded-xl border bg-card p-6 shadow-sm">
-        <form className="space-y-5" onSubmit={(event) => void form.handleSubmit(onSubmit)(event)}>
-          <div><label className="text-sm font-medium" htmlFor="profile-email">Email</label><input className="mt-1 w-full rounded-md border bg-muted px-3 py-2 text-sm" id="profile-email" value={user?.email ?? ''} disabled /></div>
-          <div><label className="text-sm font-medium" htmlFor="profile-name">Display name</label><input className="mt-1 w-full rounded-md border bg-background px-3 py-2 text-sm" id="profile-name" {...form.register('displayName')} /><FieldError message={form.formState.errors.displayName?.message} /></div>
-          <div><label className="text-sm font-medium" htmlFor="profile-currency">Default currency</label><input className="mt-1 w-full rounded-md border bg-background px-3 py-2 text-sm uppercase" id="profile-currency" maxLength={3} {...form.register('defaultCurrency')} /><FieldError message={form.formState.errors.defaultCurrency?.message} /></div>
-          <div><label className="text-sm font-medium" htmlFor="profile-timezone">Timezone</label><input className="mt-1 w-full rounded-md border bg-background px-3 py-2 text-sm" id="profile-timezone" {...form.register('timezone')} /><FieldError message={form.formState.errors.timezone?.message} /></div>
-          {error ? <p className="text-sm text-destructive">{error}</p> : null}
-          {message ? <p className="text-sm text-emerald-600">{message}</p> : null}
-          <Button disabled={saving} type="submit">{saving ? 'Saving…' : 'Save profile'}</Button>
-        </form>
-      </div>
-    </section>
   )
 }
