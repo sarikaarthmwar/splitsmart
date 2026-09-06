@@ -15,11 +15,17 @@ export const signupSchema = z
     password,
     confirmPassword: z.string(),
   })
-  .refine((values) => values.password === values.confirmPassword, {
-    path: ['confirmPassword'],
-    message: 'Passwords do not match.',
+  .superRefine((values, context) => {
+    const passwordResult = password.safeParse(values.password)
+    if (!passwordResult.success) {
+      for (const issue of passwordResult.error.issues) {
+        context.addIssue({ ...issue, path: ['password'] })
+      }
+    }
+    if (values.password !== values.confirmPassword) {
+      context.addIssue({ code: 'custom', path: ['confirmPassword'], message: 'Passwords do not match.' })
+    }
   })
-  .extend({ password })
 
 export const forgotPasswordSchema = z.object({ email })
 
