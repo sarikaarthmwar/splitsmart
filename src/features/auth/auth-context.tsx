@@ -18,12 +18,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let mounted = true
 
-    void supabase.auth.getSession().then(({ data }) => {
-      if (mounted) {
-        setSession(data.session)
-        setLoading(false)
+    async function initializeAuth() {
+      try {
+        const { data } = await supabase.auth.getSession()
+        if (mounted) setSession(data.session)
+      } catch (error) {
+        console.error('SplitSmart auth initialization failed', error)
+        if (mounted) setSession(null)
+      } finally {
+        if (mounted) setLoading(false)
       }
-    })
+    }
+
+    void initializeAuth()
 
     const {
       data: { subscription },
