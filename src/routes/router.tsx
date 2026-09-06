@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom'
 
 import { AppShell } from '@/components/layout/app-shell'
+import { AuthCallbackPage } from '@/features/auth/auth-callback-page'
 import { ProtectedRoute, PublicOnlyRoute } from '@/features/auth/protected-route'
 import { ForgotPasswordPage, LoginPage, ResetPasswordPage, SignupPage } from '@/features/auth/auth-pages'
 import { ProfilePage } from '@/features/auth/profile-page'
@@ -15,6 +16,7 @@ export const router = createBrowserRouter([
       { path: '/forgot-password', element: <ForgotPasswordPage /> },
     ],
   },
+  { path: '/auth/callback', element: <AuthCallbackPage /> },
   { path: '/reset-password', element: <ResetPasswordPage /> },
   {
     element: <ProtectedRoute />,
