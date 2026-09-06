@@ -1,3 +1,4 @@
+import { inject } from '@vercel/analytics'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { StrictMode } from 'react'
@@ -7,6 +8,8 @@ import { RouterProvider } from 'react-router-dom'
 import { AuthProvider } from '@/features/auth/auth-context'
 import '@/index.css'
 import { router } from '@/routes/router'
+
+inject()
 
 const queryClient = new QueryClient({
   defaultOptions: {
