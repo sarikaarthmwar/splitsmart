@@ -9,32 +9,17 @@ import { CreateGroupPage, GroupDetailPage, GroupsPage } from '@/features/groups/
 import { DashboardPage, NotFoundPage, PlaceholderPage } from '@/routes/pages'
 
 export const router = createBrowserRouter([
-  {
-    element: <PublicOnlyRoute />,
-    children: [
-      { path: '/login', element: <LoginPage /> },
-      { path: '/signup', element: <SignupPage /> },
-      { path: '/forgot-password', element: <ForgotPasswordPage /> },
-    ],
-  },
-  { path: '/auth/callback', element: <AuthCallbackPage /> },
-  { path: '/reset-password', element: <ResetPasswordPage /> },
-  {
-    element: <ProtectedRoute />,
-    children: [
-      {
-        element: <AppShell />,
-        children: [
-          { index: true, element: <DashboardPage /> },
-          { path: 'profile', element: <ProfilePage /> },
-          { path: 'groups', element: <GroupsPage /> },
-          { path: 'groups/new', element: <CreateGroupPage /> },
-          { path: 'groups/goa-getaway', element: <GroupDetailPage /> },
-          { path: 'activity', element: <PlaceholderPage title="Activity" description="Your group expense activity will appear here." /> },
-          { path: '*', element: <NotFoundPage /> },
-        ],
-      },
-    ],
-  },
+  { element: <PublicOnlyRoute />, children: [
+    { path: '/login', element: <LoginPage /> }, { path: '/signup', element: <SignupPage /> },
+    { path: '/forgot-password', element: <ForgotPasswordPage /> },
+  ] },
+  { path: '/auth/callback', element: <AuthCallbackPage /> }, { path: '/reset-password', element: <ResetPasswordPage /> },
+  { element: <ProtectedRoute />, children: [{ element: <AppShell />, children: [
+    { index: true, element: <DashboardPage /> }, { path: 'profile', element: <ProfilePage /> },
+    { path: 'groups', element: <GroupsPage /> }, { path: 'groups/new', element: <CreateGroupPage /> },
+    { path: 'groups/:groupId', element: <GroupDetailPage /> },
+    { path: 'activity', element: <PlaceholderPage title="Activity" description="Your group expense activity will appear here." /> },
+    { path: '*', element: <NotFoundPage /> },
+  ] }] },
   { path: '*', element: <Navigate replace to="/" /> },
 ])
