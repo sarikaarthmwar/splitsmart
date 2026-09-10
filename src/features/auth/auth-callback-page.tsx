@@ -13,6 +13,7 @@ export function AuthCallbackPage() {
     async function finishOAuth() {
       const params = new URLSearchParams(window.location.search)
       const code = params.get('code')
+      const next = params.get('next') || '/'
       const authError = params.get('error_description') ?? params.get('error')
 
       if (authError) {
@@ -32,7 +33,7 @@ export function AuthCallbackPage() {
       if (!active) return
 
       if (data.session) {
-        navigate('/', { replace: true })
+        navigate(next.startsWith('/') ? next : '/', { replace: true })
       } else {
         setError('We could not establish your session. Please try signing in again.')
       }
