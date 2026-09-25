@@ -6,6 +6,7 @@ import { ProtectedRoute, PublicOnlyRoute } from '@/features/auth/protected-route
 import { ForgotPasswordPage, LoginPage, ResetPasswordPage, SignupPage } from '@/features/auth/auth-pages'
 import { ProfilePage } from '@/features/auth/profile-page'
 import { CreateGroupPage, GroupDetailPage, GroupsPage } from '@/features/groups/group-pages'
+import { InvitePage } from '@/features/groups/invite-page'
 import { DashboardPage, NotFoundPage, PlaceholderPage } from '@/routes/pages'
 
 export const router = createBrowserRouter([
@@ -13,7 +14,7 @@ export const router = createBrowserRouter([
     { path: '/login', element: <LoginPage /> }, { path: '/signup', element: <SignupPage /> },
     { path: '/forgot-password', element: <ForgotPasswordPage /> },
   ] },
-  { path: '/auth/callback', element: <AuthCallbackPage /> }, { path: '/reset-password', element: <ResetPasswordPage /> },
+  { path: '/auth/callback', element: <AuthCallbackPage /> }, { path: '/reset-password', element: <ResetPasswordPage /> }, { path: '/invite/:token', element: <InvitePage /> },
   { element: <ProtectedRoute />, children: [{ element: <AppShell />, children: [
     { index: true, element: <DashboardPage /> }, { path: 'profile', element: <ProfilePage /> },
     { path: 'groups', element: <GroupsPage /> }, { path: 'groups/new', element: <CreateGroupPage /> },
